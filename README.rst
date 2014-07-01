@@ -3,7 +3,7 @@ django-image-variations
 =======================
 
 The image_variations Django application allows you to create different
-variations of uploaded images that can be used as thumbnails or any
+variations of uploaded images that can be used as thumbnails or for any
 another purposes.
 
 Installation

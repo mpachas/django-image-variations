@@ -53,20 +53,15 @@ in your models::
     class Image(models.Model):
         image = ImageVariationsField(upload_to='images')
 
-After that variations and their properties can be accessed as properties
-of the image field::
+After that variations can be accessed as attributes of the image field
+like so::
 
-    object.image
-    object.image.url
-    object.image.width
-    object.image.height
-    ...
     object.image.small
-    object.image.small.url
+    object.image.small.name
     object.image.small.width
     object.image.small.height
-    ...
-    object.image.large
-    object.image.large.url
-    object.image.large.width
-    object.image.large.height
+    object.image.small.path
+    object.image.small.url
+
+Each variation represented by ``ImageFile`` instance with two additional
+attributes - ``path`` and ``url``.

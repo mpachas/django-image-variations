@@ -21,9 +21,9 @@ class ImageVariationsFieldFile(ImageFieldFile):
     def __getattr__(self, variation):
         if variation in IMAGE_VARIATIONS:
             name = self._variation_name(variation)
-            image = ImageFile(self.storage.open(name))
-            image.name = name
-            image.url = self.storage.url(name)
+            image = ImageFile(self.storage.open(name), name)
+            image.path = self.storage.path(image.name)
+            image.url = self.storage.url(image.name)
             return image
         else:
             raise AttributeError

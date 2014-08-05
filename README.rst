@@ -22,8 +22,8 @@ Alternatively, you can install it from source::
 After installing append ``image_variations`` to ``INSTALLED_APPS`` in
 your project settings file.
 
-Usage
-=====
+Configuration
+=============
 
 Variations defined by setting up variable ``IMAGE_VARIATIONS`` in Django
 project settings file. This is a dict where key is variation name and
@@ -36,13 +36,22 @@ arguments to that method. Example configuration::
     IMAGE_VARIATIONS = {
         'small': (
             ('crop', {'width': 120, 'height': 90}),
+            ('save', {'quality': 90}),
         ),
         'large': (
             ('resize', {'width': 640}),
+            ('save', {'quality': 90, 'progressive': True}),
         ),
     }
 
-Currently there are only two transforms implemented - resize and crop.
+Currently there are only two transforms implemented - ``resize`` and
+``crop``. There is also a special transform called ``save`` that allows
+you to specify image quality and another options suitable for PIL's
+``Image.save`` method. This transfrom is not required, but if used, it
+must be last in tuple.
+
+Usage
+=====
 
 Application provides a field called ``ImageVariationsField`` that based
 on standard Django ``ImageField`` and performs all magic. Use this field

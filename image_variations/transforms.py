@@ -8,8 +8,9 @@ class Transforms:
         if self.img.mode not in ('L', 'RGB', 'RGBA'):
             self.img = self.img.convert('RGB')
 
-    def save(self, path):
-        self.img.save(path, self.format, quality=90)
+    def save(self, path, **kwargs):
+        kwargs['format'] = self.format
+        self.img.save(path, **kwargs)
 
     def resize(self, width=False, height=False):
         size = False

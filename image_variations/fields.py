@@ -21,12 +21,14 @@ class ImageVariationsFieldFile(ImageFieldFile):
     def __getattr__(self, variation):
         if variation in IMAGE_VARIATIONS:
             name = self._variation_name(variation)
-            image = ImageFile(self.storage.open(name), name)
-            image.path = self.storage.path(image.name)
-            image.url = self.storage.url(image.name)
-            return image
-        else:
-            raise AttributeError
+            try:
+                image = ImageFile(self.storage.open(name), name)
+                image.path = self.storage.path(image.name)
+                image.url = self.storage.url(image.name)
+                return image
+            except IOError:
+                pass
+        raise AttributeError
 
     def _variation_name(self, variation):
         root, ext = os.path.splitext(self.name)
@@ -40,9 +42,12 @@ class ImageVariationsFieldFile(ImageFieldFile):
             image.open(content)
             for transform in transforms:
                 method_name, kwargs = transform
+                if method_name == 'save':
+                    kwargs['path'] = io
                 method = getattr(image, method_name)
                 method(**kwargs)
-            image.save(io)
+            if not 'save' in transforms:
+                image.save(io)
             image_file = ContentFile(io.getvalue())
             self.storage.save(self._variation_name(variation), image_file)
 

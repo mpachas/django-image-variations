@@ -23,7 +23,10 @@ class ImageVariationsFieldFile(ImageFieldFile):
             name = self._variation_name(variation)
             try:
                 image = ImageFile(self.storage.open(name), name)
-                image.path = self.storage.path(image.name)
+                try:
+                    image.path = self.storage.path(image.name)
+                except:
+                    image.path = None
                 image.url = self.storage.url(image.name)
                 return image
             except IOError:

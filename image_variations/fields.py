@@ -15,7 +15,10 @@ class ImageVariationsFieldFile(ImageFieldFile):
 
     def delete(self, save=True):
         for variation in IMAGE_VARIATIONS.iterkeys():
-            self.storage.delete(self._variation_name(variation))
+            try:
+                self.storage.delete(self._variation_name(variation))
+            except NotImplementedError:
+                pass
         super(ImageFieldFile, self).delete(save)
 
     def __getattr__(self, variation):
@@ -25,9 +28,12 @@ class ImageVariationsFieldFile(ImageFieldFile):
                 image = ImageFile(self.storage.open(name), name)
                 try:
                     image.path = self.storage.path(image.name)
-                except:
+                except NotImplementedError:
                     image.path = None
-                image.url = self.storage.url(image.name)
+                try:
+                    image.url = self.storage.url(image.name)
+                except NotImplementedError:
+                    image.url = None
                 return image
             except IOError:
                 pass

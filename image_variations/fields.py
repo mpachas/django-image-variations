@@ -62,3 +62,6 @@ class ImageVariationsFieldFile(ImageFieldFile):
 
 class ImageVariationsField(ImageField):
     attr_class = ImageVariationsFieldFile
+
+from south.modelsinspector import add_introspection_rules
+add_introspection_rules([], ["^image_variations\.fields\.ImageVariationsField"])
